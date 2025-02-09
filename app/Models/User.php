@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Notifications\Notifiable;
 
 class User extends AuthUser
 {
+    use Notifiable;
+    
     public function detail()
     {
         return $this->hasOne(UserDetail::class);
