@@ -8,7 +8,15 @@ use Illuminate\Notifications\Notifiable;
 class User extends AuthUser
 {
     use Notifiable;
-    
+
+    protected $fillable = [
+        'name',
+        'email',
+        'role',
+        'permissions',
+        'department_id',
+    ];
+
     public function detail()
     {
         return $this->hasOne(UserDetail::class);

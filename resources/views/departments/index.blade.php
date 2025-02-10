@@ -4,7 +4,7 @@
 
     <hr>
 
-    @if (empty($departments))
+    @if (empty($departments->count()))
         <div class="text-center my-5">
             <p>No departments found.</p>
             <a href="{{ route('departments.create') }}" class="btn btn-primary">Create a new department</a>
@@ -25,7 +25,7 @@
                         <td>{{ $department->name }}</td>
                         <td>
                             <div class="d-flex gap-3 justify-content-end">
-                                @if ($department->id === 1)
+                                @if (in_array($department->id, [1, 2]))
                                     <i class="fa-solid fa-lock me-2"></i>
                                 @else
                                     <a href="{{ route('departments.edit', ['id' => $department->id]) }}" class="btn btn-sm btn-outline-dark">

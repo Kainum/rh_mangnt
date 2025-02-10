@@ -45,6 +45,13 @@ class AdminSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        
+        // rh department
+        DB::table('departments')->insert([
+            'name' => 'Recursos Humanos',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // regex
         // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/

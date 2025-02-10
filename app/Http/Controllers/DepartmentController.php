@@ -45,7 +45,7 @@ class DepartmentController extends Controller
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
         // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
+        if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
         }
 
@@ -67,7 +67,7 @@ class DepartmentController extends Controller
         ]);
 
         // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
+        if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
         }
 
@@ -85,7 +85,7 @@ class DepartmentController extends Controller
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
         // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
+        if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
         }
 
@@ -100,7 +100,7 @@ class DepartmentController extends Controller
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
         // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
+        if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
         }
 
@@ -108,5 +108,9 @@ class DepartmentController extends Controller
         $department->delete();
 
         return redirect()->route('departments.index');
+    }
+
+    private function isDepartmentBlocked($id) {
+        return in_array(intval($id), [1, 2]);
     }
 }
