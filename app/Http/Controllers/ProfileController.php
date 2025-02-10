@@ -27,7 +27,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         // check if the current password is correct
-        if(!password_verify($request->current_password, $user->password)) {
+        if (!password_verify($request->current_password, $user->password)) {
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
 
@@ -37,5 +37,23 @@ class ProfileController extends Controller
 
         // redirect
         return redirect()->back()->with('success', 'Password updated successfully.');
+    }
+
+    public function updateData(Request $request): RedirectResponse
+    {
+        // form validation
+        $request->validate([
+            'name' => 'required|min:3|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+        ]);
+
+        // update user data
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        // redirect
+        return redirect()->back()->with('success_change_data', 'Profile updated successfully.');
     }
 }
