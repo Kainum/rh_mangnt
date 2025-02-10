@@ -104,7 +104,7 @@
                         </div>
                         <div class="col">
                             <div class="mb-3">
-                                <label for="salary" class="form-label">salary</label>
+                                <label for="salary" class="form-label">Salary</label>
                                 <input type="number" class="form-control" id="salary" name="salary" step=".01"
                                     placeholder="0,00" value="{{ old('salary') }}">
                                 @error('salary')

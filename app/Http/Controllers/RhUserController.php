@@ -79,12 +79,7 @@ class RhUserController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
-            return redirect()->route('colaborators.rh.index');
-        }
-
-        $colaborator = User::findOrFail($id);
+        $colaborator = User::with('detail')->findOrFail($id);
 
         return view('colaborators.rh.edit', compact('colaborator'));
     }
@@ -93,26 +88,21 @@ class RhUserController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $id = $request->id;
-
         // form validation
         $request->validate([
-            'id' => 'required',
-            'name' => 'required|string|min:3|max:50|unique:colaborators,name,' . $id,
+            'user_id' => 'required|exists:users,id',
+            'salary' => 'required|decimal:2',
+            'admission_date' => 'required|date_format:Y-m-d',
         ]);
 
-        // Não deixa editar o departamento Administração
-        if (intval($id) === 1) {
-            return redirect()->route('colaborators.rh.index');
-        }
+        $colaborator = User::findOrFail($request->user_id);
 
-
-        $colaborator = User::findOrFail($id);
-        $colaborator->update([
-            'name' => $request->name,
+        $colaborator->detail->update([
+            'salary' => $request->salary,
+            'admission_date' => $request->admission_date,
         ]);
 
-        return redirect()->route('colaborators.rh.index');
+        return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator updated successfully.');
     }
 
     public function delete($id): View|RedirectResponse
