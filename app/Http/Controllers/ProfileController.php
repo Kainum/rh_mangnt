@@ -12,7 +12,7 @@ class ProfileController extends Controller
 
     public function index(): View
     {
-        return view('user.profile');
+        return view('users.profile');
     }
 
     public function updatePassword(Request $request): RedirectResponse

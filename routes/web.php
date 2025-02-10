@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,4 +12,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'index'])->name('user.profile');
     Route::post('/user/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update_password');
     Route::post('/user/profile/update-data', [ProfileController::class, 'updateData'])->name('user.profile.update_data');
+
+    // departments
+    Route::prefix('/departments')->name('departments.')->controller(DepartmentController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/new', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+    });
 });
