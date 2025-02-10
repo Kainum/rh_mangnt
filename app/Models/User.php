@@ -12,6 +12,7 @@ class User extends AuthUser
     protected $fillable = [
         'name',
         'email',
+        'confirmation_token',
         'role',
         'permissions',
         'department_id',

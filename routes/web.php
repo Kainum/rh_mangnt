@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RhUserController;
@@ -35,4 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
     });
+});
+
+Route::middleware('guest')->group(function () {
+    // email confirmation and password definition
+    Route::get('/confirm-account/{token}', [ConfirmAccountController::class, 'confirmAccount'])->name('confirm_account');
 });
