@@ -25,7 +25,7 @@
 
         <x-side-bar />
 
-        <main class="m-3 p-3">
+        <main class="w-100 p-4">
             {{ $slot }}
         </main>
 
