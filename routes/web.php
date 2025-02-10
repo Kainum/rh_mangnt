@@ -17,6 +17,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/departments')->name('departments.')->controller(DepartmentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/new', 'create')->name('create');
-        Route::post('/', 'store')->name('store');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+        Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
     });
 });
