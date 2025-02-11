@@ -44,10 +44,17 @@
                                     class="btn btn-sm btn-outline-dark ms-2">
                                     <i class="fas fa-eye me-2"></i>Details
                                 </a>
-                                <a href="{{ route('colaborators.admin.delete', ['id' => $colaborator->id]) }}"
-                                    class="btn btn-sm btn-outline-dark ms-2">
-                                    <i class="fa-regular fa-trash-can me-2"></i>Delete
-                                </a>
+                                @empty($colaborator->deleted_at)
+                                    <a href="{{ route('colaborators.admin.delete', ['id' => $colaborator->id]) }}"
+                                        class="btn btn-sm btn-outline-dark ms-2">
+                                        <i class="fa-regular fa-trash-can me-2"></i>Delete
+                                    </a>
+                                @else
+                                    <a href="{{ route('colaborators.admin.restore', ['id' => $colaborator->id]) }}"
+                                        class="btn btn-sm btn-outline-dark ms-2">
+                                        <i class="fas fa-trash-arrow-up me-2"></i>Restore
+                                    </a>
+                                @endempty
                             </div>
                         </td>
                     </tr>

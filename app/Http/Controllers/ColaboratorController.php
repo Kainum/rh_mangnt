@@ -18,9 +18,10 @@ class ColaboratorController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborators = User::with('detail', 'department')
-            ->whereNot('role', 'admin')
-            ->get();
+        $colaborators = User::withTrashed()
+                        ->with('detail', 'department')
+                        ->whereNot('role', 'admin')
+                        ->get();
 
         return view('colaborators.admin.index', compact('colaborators'));
     }
@@ -148,9 +149,18 @@ class ColaboratorController extends Controller
         Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
 
         $colaborator = User::findOrFail($id);
-        $colaborator->detail()->delete();
         $colaborator->delete();
 
         return redirect()->route('colaborators.admin.index')->with('success', 'Colaborator deleted successfully.');
+    }
+
+    public function restore($id): RedirectResponse
+    {
+        Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
+
+        $colaborator = User::withTrashed()->findOrFail($id);
+        $colaborator->restore();
+
+        return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator restored successfully.');
     }
 }

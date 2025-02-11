@@ -18,7 +18,8 @@ class RhUserController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborators = User::with('detail')
+        $colaborators = User::withTrashed()
+                            ->with('detail')
                             ->where('role', 'rh')
                             ->get();
 
@@ -136,5 +137,15 @@ class RhUserController extends Controller
         $colaborator->delete();
 
         return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator deleted successfully.');
+    }
+
+    public function restore($id): RedirectResponse
+    {
+        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
+
+        $colaborator = User::withTrashed()->findOrFail($id);
+        $colaborator->restore();
+
+        return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator restored successfully.');
     }
 }

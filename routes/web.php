@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+        Route::get('/restore/{id}', 'restore')->name('restore');
     });
 
     // Colaborators
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', 'show')->name('show');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+        Route::get('/restore/{id}', 'restore')->name('restore');
     });
 });
 
