@@ -7,13 +7,16 @@ use App\Http\Controllers\RhUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
+    // home
     Route::redirect('/', '/home');
     Route::view('/home', 'home')->name('home');
 
     // user profile
-    Route::get('/user/profile', [ProfileController::class, 'index'])->name('user.profile');
-    Route::post('/user/profile/update-password', [ProfileController::class, 'updatePassword'])->name('user.profile.update_password');
-    Route::post('/user/profile/update-data', [ProfileController::class, 'updateData'])->name('user.profile.update_data');
+    Route::prefix('/user/profile')->name('user.profile.')->controller(ProfileController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/update-password', 'updatePassword')->name('update_password');
+        Route::post('/update-data', 'updateData')->name('update_data');
+    });
 
     // departments
     Route::prefix('/departments')->name('departments.')->controller(DepartmentController::class)->group(function () {
@@ -41,4 +44,5 @@ Route::middleware('auth')->group(function () {
 Route::middleware('guest')->group(function () {
     // email confirmation and password definition
     Route::get('/confirm-account/{token}', [ConfirmAccountController::class, 'confirmAccount'])->name('confirm_account');
+    Route::post('/confirm-account', [ConfirmAccountController::class, 'confirmAccountSubmit'])->name('confirm_account_submit');
 });
