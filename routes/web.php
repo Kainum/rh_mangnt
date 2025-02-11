@@ -1,16 +1,27 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ColaboratorController;
 use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RhManagementController;
 use App\Http\Controllers\RhUserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     // home
     Route::redirect('/', '/home');
-    Route::view('/home', 'home')->name('home');
+    Route::get('/home', function () {
+        if (Auth::user()->can('admin')) {
+            return redirect()->route('admin.home');
+        } else if (Auth::user()->can('rh')) {
+            return redirect()->route('rh.management.index');
+        } else {
+            return view('home');
+        }
+    })->name('home');
 
     // user profile
     Route::prefix('/user/profile')->name('user.profile.')->controller(ProfileController::class)->group(function () {
@@ -28,6 +39,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+    });
+
+    // General colaborators
+    Route::prefix('/rh/management')->name('rh.management.')->controller(RhManagementController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/new', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
     });
 
     // RH colaborators
@@ -50,6 +68,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
         Route::get('/restore/{id}', 'restore')->name('restore');
     });
+
+    // Admin routes
+    Route::get('/admin/home', [AdminController::class, 'home'])->name('admin.home');
 });
 
 Route::middleware('guest')->group(function () {
