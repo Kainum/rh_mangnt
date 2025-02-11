@@ -1,19 +1,15 @@
-<x-layout-app page-title="RH Users">
+<x-layout-app page-title="Colaborators">
 
-    <h3>RH Users</h3>
+
+    <h3>All colaborators</h3>
 
     <hr>
 
     @if (empty($colaborators->count()))
         <div class="text-center my-5">
             <p>No colaborators found.</p>
-            <a href="{{ route('colaborators.rh.create') }}" class="btn btn-primary">Create a new RH user</a>
         </div>
     @else
-        <div class="mb-3">
-            <a href="{{ route('colaborators.rh.create') }}" class="btn btn-primary">Create a new RH user</a>
-        </div>
-
         <table class="table" id="table">
             <thead class="table-dark">
                 <th>Name</th>
@@ -44,11 +40,11 @@
 
                         <td>
                             <div class="d-flex gap-3 justify-content-end">
-                                <a href="{{ route('colaborators.rh.edit', ['id' => $colaborator->id]) }}"
+                                <a href="{{ route('colaborators.admin.show', ['id' => $colaborator->id]) }}"
                                     class="btn btn-sm btn-outline-dark ms-2">
-                                    <i class="fa-regular fa-pen-to-square me-2"></i>Edit
+                                    <i class="fas fa-eye me-2"></i>Details
                                 </a>
-                                <a href="{{ route('colaborators.rh.delete', ['id' => $colaborator->id]) }}"
+                                <a href="{{ route('colaborators.admin.delete', ['id' => $colaborator->id]) }}"
                                     class="btn btn-sm btn-outline-dark ms-2">
                                     <i class="fa-regular fa-trash-can me-2"></i>Delete
                                 </a>
@@ -59,4 +55,5 @@
             </tbody>
         </table>
     @endif
+
 </x-layout-app>

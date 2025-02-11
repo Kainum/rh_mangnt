@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Notifications\Notifiable;
 
 class User extends AuthUser
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -27,4 +28,5 @@ class User extends AuthUser
     {
         return $this->belongsTo(Department::class);
     }
+
 }

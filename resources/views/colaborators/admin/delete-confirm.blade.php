@@ -10,8 +10,8 @@
         <div class="text-center">
             <h3 class="my-5">{{ $colaborator->name }}</h3>
             <p>{{ $colaborator->email }}</p>
-            <a href="{{ route('colaborators.rh.index') }}" class="btn btn-secondary px-5">No</a>
-            <a href="{{ route('colaborators.rh.destroy', ['id' => $colaborator->id]) }}" class="btn btn-danger px-5">Yes</a>
+            <a href="{{ route('colaborators.admin.index') }}" class="btn btn-secondary px-5">No</a>
+            <a href="{{ route('colaborators.admin.destroy', ['id' => $colaborator->id]) }}" class="btn btn-danger px-5">Yes</a>
         </div>
         
     </div>
