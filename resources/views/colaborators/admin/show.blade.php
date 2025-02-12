@@ -26,7 +26,7 @@
 
                 <!-- permissions -->
 
-                <p>Department: <strong>{{ $colaborator->department->name }}</strong></p>
+                <p>Department: <strong>{{ $colaborator->department->name ?? '-' }}</strong></p>
                 <p>Active:
                     @empty($colaborator->email_verified_at)
                         <span class="badge bg-danger">No</span>
