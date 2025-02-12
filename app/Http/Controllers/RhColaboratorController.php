@@ -34,7 +34,8 @@ class RhColaboratorController extends Controller
         // get all departments
         $departments = Department::all();
 
-        return view('colaborators.create', compact('departments'));
+        $isRhInfo = true;
+        return view('colaborators.create', compact('departments', 'isRhInfo'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -93,9 +94,10 @@ class RhColaboratorController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborator = User::with('detail')->findOrFail($id);
+        $colaborator = User::with('detail')->where('role', 'rh')->findOrFail($id);
 
-        return view('colaborators.edit', compact('colaborator'));
+        $isRhInfo = true;
+        return view('colaborators.edit', compact('colaborator', 'isRhInfo'));
     }
 
     public function update(Request $request): RedirectResponse
@@ -109,7 +111,7 @@ class RhColaboratorController extends Controller
             'admission_date' => 'required|date_format:Y-m-d',
         ]);
 
-        $colaborator = User::findOrFail($request->user_id);
+        $colaborator = User::where('role', 'rh')->findOrFail($request->user_id);
 
         $colaborator->detail->update([
             'salary' => $request->salary,
@@ -123,7 +125,7 @@ class RhColaboratorController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborator = User::findOrFail($id);
+        $colaborator = User::where('role', 'rh')->findOrFail($id);
 
         // display page for confirmation
         $isRhInfo = true;
@@ -134,7 +136,7 @@ class RhColaboratorController extends Controller
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborator = User::findOrFail($id);
+        $colaborator = User::where('role', 'rh')->findOrFail($id);
         $colaborator->delete();
 
         return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator deleted successfully.');

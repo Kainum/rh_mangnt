@@ -1,9 +1,25 @@
-<x-layout-app page-title="New RH Colaborator">
+<x-layout-app>
 
-    <h3>New Human Resources Colaborators</h3>
+    @php
+        $route = $isRhInfo ? 'colaborators.rh' : 'colaborators';
+    @endphp
+
+    <x-slot name="pageTitle">
+        @if ($isRhInfo)
+            New RH Colaborator
+        @else
+            New Colaborator
+        @endif
+    </x-slot>
+
+    @if ($isRhInfo)
+        <h3>New Human Resources Colaborator</h3>
+    @else
+        <h3>New Colaborator</h3>
+    @endif
 
     <hr>
-    <form action="{{ route('colaborators.rh.store') }}" method="post">
+    <form action="{{ route("$route.store") }}" method="post">
         <div class="container-fluid">
             <div class="row gap-3">
 
@@ -36,7 +52,7 @@
                                 <label for="department">Department</label>
                                 <select class="form-select" name="department" id="department">
                                     @foreach ($departments as $department)
-                                        @if ($department->id == 2)
+                                        @if (!$isRhInfo || ($isRhInfo && $department->id == 2))
                                             <option value="{{ $department->id }}">{{ $department->name }}</option>
                                         @endif
                                     @endforeach
@@ -45,15 +61,17 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div>
-                                <a href="{{ route('departments.create') }}" class="btn btn-outline-primary">
-                                    <i class="fas fa-plus"></i>
-                                </a>
-                            </div>
                         </div>
                     </div>
 
-                    <p class="mb-3">Profile: <strong>Human Resources</strong></p>
+                    <p class="mb-3">Profile: <strong>
+                            @if ($isRhInfo)
+                                Human Resources
+                            @else
+                                General Colaborator
+                            @endif
+                        </strong>
+                    </p>
                 </div>
 
                 {{-- user details --}}
@@ -127,7 +145,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <a href="{{ route('colaborators.rh.index') }}" class="btn btn-outline-danger me-3">Cancel</a>
+                    <a href="{{ route("$route.index") }}" class="btn btn-outline-danger me-3">Cancel</a>
                     <button type="submit" class="btn btn-primary">Create colaborator</button>
                 </div>
             </div>

@@ -5,16 +5,15 @@ use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RhManagementController;
 use App\Http\Controllers\RhColaboratorController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    // home
+    // Home
     Route::redirect('/', '/home');
     Route::get('/home', [HomeController::class, 'home'])->name('home');
 
-    // user profile
+    // User Profile
     Route::prefix('/my-profile')->name('user.profile.')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/update-password', 'updatePassword')->name('update_password');
@@ -22,7 +21,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-address', 'updateAddress')->name('update_address');
     });
 
-    // departments
+    // Departments
     Route::prefix('/departments')->name('departments.')->controller(DepartmentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/new', 'create')->name('create');
@@ -31,18 +30,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
-    });
-
-    // General colaborators
-    Route::prefix('/rh/management')->name('rh.management.')->controller(RhManagementController::class)->group(function () {
-        // Route::get('/', 'index')->name('index');
-        Route::get('/new', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::post('/update', 'update')->name('update');
-        // Route::get('/delete/{id}', 'delete')->name('delete');
-        // Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
-        // Route::get('/restore/{id}', 'restore')->name('restore');
     });
 
     // RH colaborators
@@ -59,13 +46,14 @@ Route::middleware('auth')->group(function () {
     // Colaborators
     Route::prefix('/colaborators')->name('colaborators.')->controller(ColaboratorController::class)->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/{id}', 'show')->name('show');
         Route::get('/new', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+        // Tanto para RH quanto geral
+        Route::get('/show/{id}', 'show')->name('show');
         Route::get('/restore/{id}', 'restore')->name('restore');
     });
 

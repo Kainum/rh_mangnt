@@ -1,8 +1,15 @@
-<x-layout-app page-title="RH Colaborators">
-
+<x-layout-app>
     @php
         $route = $isRhInfo ? 'colaborators.rh' : 'colaborators';
     @endphp
+
+    <x-slot name="pageTitle">
+        @if ($isRhInfo)
+            RH Colaborators
+        @else
+            Colaborators
+        @endif
+    </x-slot>
 
     @if ($isRhInfo)
         <h3>RH Colaborators</h3>
