@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ColaboratorController;
 use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RhManagementController;
 use App\Http\Controllers\RhUserController;
@@ -13,18 +14,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     // home
     Route::redirect('/', '/home');
-    Route::get('/home', function () {
-        if (Auth::user()->can('admin')) {
-            return redirect()->route('admin.home');
-        } else if (Auth::user()->can('rh')) {
-            return redirect()->route('rh.management.index');
-        } else {
-            return redirect()->route('colaborator.home');
-        }
-    })->name('home');
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
 
     // user profile
-    Route::prefix('/user/profile')->name('user.profile.')->controller(ProfileController::class)->group(function () {
+    Route::prefix('/my-profile')->name('user.profile.')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/update-password', 'updatePassword')->name('update_password');
         Route::post('/update-data', 'updateData')->name('update_data');
@@ -74,13 +67,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
         Route::get('/restore/{id}', 'restore')->name('restore');
     });
-
-    // Admin routes
-    Route::get('/admin/home', [AdminController::class, 'home'])->name('admin.home');
-    
-    // Colaborator routes
-    Route::get('/colaborator', [ColaboratorController::class, 'home'])->name('colaborator.home');
-
 
 });
 

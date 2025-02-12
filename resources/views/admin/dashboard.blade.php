@@ -1,6 +1,6 @@
 <x-layout-app page-title="Home">
     
-    <h3>Home</h3>
+    <h3>Dashboard</h3>
     <hr>
 
     <div class="d-flex">

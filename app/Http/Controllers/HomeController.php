@@ -3,14 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AdminController extends Controller
+class HomeController extends Controller
 {
+    public function home(): View|RedirectResponse
+    {
+        if (Auth::user()->can('admin')) {
+            return $this->admin_home();
+        } else if (Auth::user()->can('rh')) {
+            return redirect()->route('rh.management.index');
+        } else if (Auth::user()->can('colaborator')) {
+            return $this->colaborator_home();
+        }
+    }
 
-    public function home(): View
+    private function admin_home(): View
     {
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
@@ -58,15 +69,24 @@ class AdminController extends Controller
                     }),
                 ];
             });
-        
+
         // format salary
-        $data['total_salary_by_department'] = $data['total_salary_by_department']->map(function($row) {
+        $data['total_salary_by_department'] = $data['total_salary_by_department']->map(function ($row) {
             return [
                 'department' => $row['department'],
                 'total' => 'R$ ' . number_format($row['total'], 2, ',', '.'),
             ];
         });
 
-        return view('home', compact('data'));
+        return view('admin.dashboard', compact('data'));
+    }
+
+    private function colaborator_home(): View
+    {
+        Auth::user()->canAny(['colaborator']) ?: abort(403, 'You are not allowed to access this page.');
+
+        $colaborator = User::with('detail', 'department')->findOrFail(Auth::user()->id);
+
+        return view('colaborators.admin.show', compact('colaborator'));
     }
 }
