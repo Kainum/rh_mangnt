@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
         } else if (Auth::user()->can('rh')) {
             return redirect()->route('rh.management.index');
         } else {
-            return view('home');
+            return redirect()->route('colaborator.home');
         }
     })->name('home');
 
@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/update-password', 'updatePassword')->name('update_password');
         Route::post('/update-data', 'updateData')->name('update_data');
+        Route::post('/update-address', 'updateAddress')->name('update_address');
     });
 
     // departments
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+        Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+        Route::get('/restore/{id}', 'restore')->name('restore');
     });
 
     // RH colaborators
@@ -73,6 +77,11 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes
     Route::get('/admin/home', [AdminController::class, 'home'])->name('admin.home');
+    
+    // Colaborator routes
+    Route::get('/colaborator', [ColaboratorController::class, 'home'])->name('colaborator.home');
+
+
 });
 
 Route::middleware('guest')->group(function () {

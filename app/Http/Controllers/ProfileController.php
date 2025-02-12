@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,8 @@ class ProfileController extends Controller
 
     public function index(): View
     {
-        return view('users.profile');
+        $colaborator = User::with('detail', 'department')->findOrFail(Auth::user()->id);
+        return view('users.profile', compact('colaborator'));
     }
 
     public function updatePassword(Request $request): RedirectResponse
@@ -55,5 +57,29 @@ class ProfileController extends Controller
 
         // redirect
         return redirect()->back()->with('success_change_data', 'Profile updated successfully.');
+    }
+
+    public function updateAddress(Request $request): RedirectResponse
+    {
+        // form validation
+        $request->validate([
+            'address' => 'required|min:3|max:100',
+            'zip_code' => 'required|min:8|max:10',
+            'city' => 'required|min:3|max:50',
+            'phone' => 'required|min:6|max:20',
+        ]);
+
+        // update user data
+        $detail = Auth::user()->detail;
+
+        $detail->update([
+            'address' => $request->address,
+            'zip_code' => $request->zip_code,
+            'city' => $request->city,
+            'phone' => $request->phone,
+        ]);
+
+        // redirect
+        return redirect()->back()->with('success_change_address', 'Profile updated successfully.');
     }
 }

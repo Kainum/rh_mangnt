@@ -12,7 +12,7 @@
         </div>
     @else
         <div class="mb-3">
-            <a href="{{ route('rh.management.create') }}" class="btn btn-primary">Create a new RH user</a>
+            <a href="{{ route('rh.management.create') }}" class="btn btn-primary">Create a new colaborator</a>
         </div>
         <table class="table" id="table">
             <thead class="table-dark">
@@ -55,12 +55,12 @@
                                             <i class="fa-regular fa-pen-to-square me-2"></i>Edit
                                         </a>
                                     @endcan
-                                    <a href="{{ route('colaborators.admin.delete', ['id' => $colaborator->id]) }}"
+                                    <a href="{{ route('rh.management.delete', ['id' => $colaborator->id]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fa-regular fa-trash-can me-2"></i>Delete
                                     </a>
                                 @else
-                                    <a href="{{ route('colaborators.admin.restore', ['id' => $colaborator->id]) }}"
+                                    <a href="{{ route('rh.management.restore', ['id' => $colaborator->id]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fas fa-trash-arrow-up me-2"></i>Restore
                                     </a>

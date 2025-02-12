@@ -70,4 +70,13 @@ class ColaboratorController extends Controller
 
         return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator restored successfully.');
     }
+
+    public function home(): View
+    {
+        Auth::user()->canAny(['colaborator']) ?: abort(403, 'You are not allowed to access this page.');
+
+        $colaborator = User::with('detail', 'department')->findOrFail(Auth::user()->id);
+
+        return view('colaborators.admin.show', compact('colaborator'));
+    }
 }
