@@ -4,9 +4,7 @@
             <div class="col-5">
 
                 <!-- logo -->
-                <div class="text-center mb-5">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" width="200px">
-                </div>
+                <x-site-logo />
 
                 <!-- forgot password -->
                 <div class="card p-5">
