@@ -28,7 +28,7 @@ class ColaboratorController extends Controller
         return view('colaborators.index', compact('colaborators', 'isRhInfo'));
     }
 
-    public function show($id): View|RedirectResponse
+    public function show($id): View
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
@@ -110,7 +110,7 @@ class ColaboratorController extends Controller
         return redirect()->route('colaborators.index');
     }
 
-    public function edit($id): View|RedirectResponse
+    public function edit($id): View
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
 
@@ -154,7 +154,7 @@ class ColaboratorController extends Controller
         return redirect()->route('colaborators.index')->with('success', 'Colaborator updated successfully.');
     }
 
-    public function delete($id): View|RedirectResponse
+    public function delete($id): View
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 

@@ -6,6 +6,8 @@
 
             <h3 class="mb-3">Change user data</h3>
 
+            <hr>
+
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $colaborator->name) }}">

@@ -7,7 +7,6 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
@@ -16,8 +15,6 @@ class RhColaboratorController extends Controller
 {
     public function index(): View
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         $colaborators = User::withTrashed()
                             ->with('detail')
                             ->where('role', 'rh')
@@ -29,8 +26,6 @@ class RhColaboratorController extends Controller
 
     public function create(): View
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         // get all departments
         $departments = Department::all();
 
@@ -40,8 +35,6 @@ class RhColaboratorController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         // form validation
         $request->validate([
             'name' => 'required|string|max:255',
@@ -90,10 +83,8 @@ class RhColaboratorController extends Controller
         return redirect()->route('colaborators.rh.index');
     }
 
-    public function edit($id): View|RedirectResponse
+    public function edit($id): View
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         $colaborator = User::with('detail')->where('role', 'rh')->findOrFail($id);
 
         $isRhInfo = true;
@@ -102,8 +93,6 @@ class RhColaboratorController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         // form validation
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -121,10 +110,8 @@ class RhColaboratorController extends Controller
         return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator updated successfully.');
     }
 
-    public function delete($id): View|RedirectResponse
+    public function delete($id): View
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         $colaborator = User::where('role', 'rh')->findOrFail($id);
 
         // display page for confirmation
@@ -134,8 +121,6 @@ class RhColaboratorController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
         $colaborator = User::where('role', 'rh')->findOrFail($id);
         $colaborator->delete();
 

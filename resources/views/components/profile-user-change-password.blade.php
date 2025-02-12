@@ -6,6 +6,8 @@
 
             <h3 class="mb-3">Change password</h3>
 
+            <hr>
+
             <div class="mb-3">
                 <label for="current_password" class="form-label">Current password</label>
                 <input type="password" name="current_password" id="current_password" class="form-control">

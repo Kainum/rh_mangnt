@@ -87,6 +87,6 @@ class HomeController extends Controller
 
         $colaborator = User::with('detail', 'department')->findOrFail(Auth::user()->id);
 
-        return view('colaborators.admin.show', compact('colaborator'));
+        return view('colaborators.show', compact('colaborator'));
     }
 }
