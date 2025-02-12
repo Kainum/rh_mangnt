@@ -14,7 +14,7 @@
             <h3 class="my-5">{{ $colaborator->name }}</h3>
             <p>{{ $colaborator->email }}</p>
             <a href="{{ route("$route.index") }}" class="btn btn-secondary px-5">No</a>
-            <a href="{{ route("$route.destroy", ['id' => $colaborator->id]) }}" class="btn btn-danger px-5">Yes</a>
+            <a href="{{ route("$route.destroy", ['id' => Crypt::encrypt($colaborator->id)]) }}" class="btn btn-danger px-5">Yes</a>
         </div>
         
     </div>

@@ -80,22 +80,22 @@
                         <td>
                             <div class="d-flex gap-3 justify-content-end">
                                 @empty($colaborator->deleted_at)
-                                    <a href="{{ route('colaborators.show', ['id' => $colaborator->id]) }}"
+                                    <a href="{{ route('colaborators.show', ['id' => Crypt::encrypt($colaborator->id)]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fas fa-eye me-2"></i>Details
                                     </a>
                                     @if ($isRhInfo || Auth::user()->can('rh'))
-                                        <a href="{{ route("$route.edit", ['id' => $colaborator->id]) }}"
+                                        <a href="{{ route("$route.edit", ['id' => Crypt::encrypt($colaborator->id)]) }}"
                                             class="btn btn-sm btn-outline-dark ms-2">
                                             <i class="fa-regular fa-pen-to-square me-2"></i>Edit
                                         </a>
                                     @endif
-                                    <a href="{{ route("$route.delete", ['id' => $colaborator->id]) }}"
+                                    <a href="{{ route("$route.delete", ['id' => Crypt::encrypt($colaborator->id)]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fa-regular fa-trash-can me-2"></i>Delete
                                     </a>
                                 @else
-                                    <a href="{{ route('colaborators.restore', ['id' => $colaborator->id]) }}"
+                                    <a href="{{ route('colaborators.restore', ['id' => Crypt::encrypt($colaborator->id)]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fas fa-trash-arrow-up me-2"></i>Restore
                                     </a>

@@ -10,7 +10,7 @@
         <div class="text-center">
             <h3 class="my-5">{{ $department->name }}</h3>
             <a href="{{ route('departments.index') }}" class="btn btn-secondary px-5">No</a>
-            <a href="{{ route('departments.destroy', ['id' => $department->id]) }}" class="btn btn-danger px-5">Yes</a>
+            <a href="{{ route('departments.destroy', ['id' => Crypt::encrypt($department->id)]) }}" class="btn btn-danger px-5">Yes</a>
         </div>
         
     </div>

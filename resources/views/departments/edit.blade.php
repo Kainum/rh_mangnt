@@ -9,7 +9,7 @@
 
             @csrf
 
-            <input type="hidden" name="id" value="{{ $department->id }}">
+            <input type="hidden" name="id" value="{{ Crypt::encrypt($department->id) }}">
     
             <div class="mb-3">
                 <label for="name" class="form-label">Department name</label>

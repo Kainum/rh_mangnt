@@ -28,10 +28,10 @@
                                 @if (in_array($department->id, [1, 2]))
                                     <i class="fa-solid fa-lock me-2"></i>
                                 @else
-                                    <a href="{{ route('departments.edit', ['id' => $department->id]) }}" class="btn btn-sm btn-outline-dark ms-2">
+                                    <a href="{{ route('departments.edit', ['id' => Crypt::encrypt($department->id)]) }}" class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fa-regular fa-pen-to-square me-2"></i>Edit
                                     </a>
-                                    <a href="{{ route('departments.delete', ['id' => $department->id]) }}" class="btn btn-sm btn-outline-dark ms-2">
+                                    <a href="{{ route('departments.delete', ['id' => Crypt::encrypt($department->id)]) }}" class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fa-regular fa-trash-can me-2"></i>Delete
                                     </a>
                                 @endif

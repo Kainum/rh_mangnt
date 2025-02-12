@@ -23,14 +23,14 @@
 
         @csrf
 
+        <input type="hidden" name="user_id" value="{{ Crypt::encrypt($colaborator->id) }}">
+
         <div class="d-flex gap-5">
             <p>Colaborator name: <strong>{{ $colaborator->name }}</strong></p>
             <p>Colaborator email: <strong>{{ $colaborator->email }}</strong></p>
         </div>
 
         <hr>
-
-        <input type="hidden" name="user_id" value="{{ $colaborator->id }}">
 
         <div class="container-fluid">
             <div class="row gap-3">
@@ -73,7 +73,7 @@
                             <label for="department">Department</label>
                             <select class="form-select" name="department" id="department">
                                 @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}"
+                                    <option value="{{ Crypt::encrypt($department->id) }}"
                                         {{ $colaborator->department_id == $department->id ? 'selected' : '' }}>
                                         {{ $department->name }}</option>
                                 @endforeach

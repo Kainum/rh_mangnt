@@ -53,7 +53,7 @@
                                 <select class="form-select" name="department" id="department">
                                     @foreach ($departments as $department)
                                         @if (!$isRhInfo || ($isRhInfo && $department->id == 2))
-                                            <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            <option value="{{ Crypt::encrypt($department->id) }}">{{ $department->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>

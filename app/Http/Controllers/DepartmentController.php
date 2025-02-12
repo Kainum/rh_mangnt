@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\User;
+use App\Services\Operations;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -37,6 +38,8 @@ class DepartmentController extends Controller
 
     public function edit($id): View|RedirectResponse
     {
+        $id = Operations::decryptId($id);
+
         // Não deixa editar o departamento Administração
         if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
@@ -50,6 +53,7 @@ class DepartmentController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $id = $request->id;
+        $id = Operations::decryptId($id);
 
         // form validation
         $request->validate([
@@ -72,6 +76,8 @@ class DepartmentController extends Controller
 
     public function delete($id): View|RedirectResponse
     {
+        $id = Operations::decryptId($id);
+
         // Não deixa editar o departamento Administração
         if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');
@@ -85,6 +91,8 @@ class DepartmentController extends Controller
 
     public function destroy($id): RedirectResponse
     {
+        $id = Operations::decryptId($id);
+        
         // Não deixa editar o departamento Administração
         if ($this->isDepartmentBlocked($id)) {
             return redirect()->route('departments.index');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ConfirmAccountEmail;
 use App\Models\Department;
 use App\Models\User;
+use App\Services\Operations;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,8 @@ class ColaboratorController extends Controller
     public function show($id): View
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
+        
+        $id = Operations::decryptId($id);
 
         $colaborator = User::with('detail', 'department')
                         ->findOrFail($id);
@@ -41,10 +44,6 @@ class ColaboratorController extends Controller
         }
         
         return view('colaborators.show', compact('colaborator'));
-    }
-
-    public function home () {
-        echo 'salve';
     }
 
     public function create(): View
@@ -66,6 +65,10 @@ class ColaboratorController extends Controller
     public function store(Request $request): RedirectResponse
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
+
+        $request->merge([
+            'department' => Operations::decryptId($request->department),
+        ]);
 
         // form validation
         $request->validate([
@@ -114,6 +117,8 @@ class ColaboratorController extends Controller
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
 
+        $id = Operations::decryptId($id);
+
         $colaborator = User::with('detail')
                             ->where('role', 'colaborator')
                             ->findOrFail($id);
@@ -127,6 +132,11 @@ class ColaboratorController extends Controller
     public function update(Request $request): RedirectResponse
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
+
+        $request->merge([
+            'user_id' => Operations::decryptId($request->user_id),
+            'department' => Operations::decryptId($request->department),
+        ]);
 
         // form validation
         $request->validate([
@@ -158,6 +168,8 @@ class ColaboratorController extends Controller
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
+        $id = Operations::decryptId($id);
+
         $colaborator = User::where('role', 'colaborator')->findOrFail($id);
 
         // display page for confirmation
@@ -169,6 +181,8 @@ class ColaboratorController extends Controller
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
+        $id = Operations::decryptId($id);
+
         $colaborator = User::where('role', 'colaborator')->findOrFail($id);
         $colaborator->delete();
 
@@ -178,6 +192,8 @@ class ColaboratorController extends Controller
     public function restore($id): RedirectResponse
     {
         Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
+
+        $id = Operations::decryptId($id);
 
         $colaborator = User::withTrashed()->findOrFail($id);
         $colaborator->restore();

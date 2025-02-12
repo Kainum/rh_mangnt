@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ConfirmAccountEmail;
 use App\Models\Department;
 use App\Models\User;
+use App\Services\Operations;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -35,6 +36,10 @@ class RhColaboratorController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->merge([
+            'department' => Operations::decryptId($request->department),
+        ]);
+
         // form validation
         $request->validate([
             'name' => 'required|string|max:255',
@@ -85,6 +90,8 @@ class RhColaboratorController extends Controller
 
     public function edit($id): View
     {
+        $id = Operations::decryptId($id);
+        
         $colaborator = User::with('detail')->where('role', 'rh')->findOrFail($id);
 
         $isRhInfo = true;
@@ -93,6 +100,10 @@ class RhColaboratorController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
+        $request->merge([
+            'user_id' => Operations::decryptId($request->user_id),
+        ]);
+
         // form validation
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -112,6 +123,8 @@ class RhColaboratorController extends Controller
 
     public function delete($id): View
     {
+        $id = Operations::decryptId($id);
+
         $colaborator = User::where('role', 'rh')->findOrFail($id);
 
         // display page for confirmation
@@ -121,6 +134,8 @@ class RhColaboratorController extends Controller
 
     public function destroy($id): RedirectResponse
     {
+        $id = Operations::decryptId($id);
+
         $colaborator = User::where('role', 'rh')->findOrFail($id);
         $colaborator->delete();
 
