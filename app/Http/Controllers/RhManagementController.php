@@ -94,9 +94,13 @@ class RhManagementController extends Controller
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
 
-        $colaborator = User::with('detail')->findOrFail($id);
+        $colaborator = User::with('detail')
+                            ->where('role', 'colaborator')
+                            ->findOrFail($id);
 
-        return view('colaborators.admin.edit', compact('colaborator'));
+        $departments = Department::where('id', '>', 2)->get();
+
+        return view('colaborators.admin.edit', compact('colaborator', 'departments'));
     }
 
     public function update(Request $request): RedirectResponse
@@ -108,10 +112,19 @@ class RhManagementController extends Controller
             'user_id' => 'required|exists:users,id',
             'salary' => 'required|decimal:2',
             'admission_date' => 'required|date_format:Y-m-d',
+            'department' => 'required|exists:departments,id',
         ]);
+
+        // check if department is valid
+        if ($request->department <= 2) {
+            return redirect()->route('home');
+        }
 
         $colaborator = User::findOrFail($request->user_id);
 
+        $colaborator->update([
+            'department_id' => $request->department,
+        ]);
         $colaborator->detail->update([
             'salary' => $request->salary,
             'admission_date' => $request->admission_date,

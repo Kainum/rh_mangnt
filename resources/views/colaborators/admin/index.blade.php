@@ -49,6 +49,12 @@
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fas fa-eye me-2"></i>Details
                                     </a>
+                                    @can('rh')
+                                        <a href="{{ route('rh.management.edit', ['id' => $colaborator->id]) }}"
+                                            class="btn btn-sm btn-outline-dark ms-2">
+                                            <i class="fa-regular fa-pen-to-square me-2"></i>Edit
+                                        </a>
+                                    @endcan
                                     <a href="{{ route('colaborators.admin.delete', ['id' => $colaborator->id]) }}"
                                         class="btn btn-sm btn-outline-dark ms-2">
                                         <i class="fa-regular fa-trash-can me-2"></i>Delete

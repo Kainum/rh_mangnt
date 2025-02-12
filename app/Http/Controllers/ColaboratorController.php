@@ -28,7 +28,7 @@ class ColaboratorController extends Controller
 
     public function show($id): View|RedirectResponse
     {
-        Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
+        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
         // check if the id is the same as the auth user
         if (Auth::user()->id == $id) {
@@ -43,7 +43,7 @@ class ColaboratorController extends Controller
 
     public function delete($id): View|RedirectResponse
     {
-        Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
+        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
         $colaborator = User::findOrFail($id);
 
@@ -53,7 +53,7 @@ class ColaboratorController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
+        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
         $colaborator = User::findOrFail($id);
         $colaborator->delete();
@@ -63,7 +63,7 @@ class ColaboratorController extends Controller
 
     public function restore($id): RedirectResponse
     {
-        Auth::user()->can('admin', 'rh') ?: abort(403, 'You are not allowed to access this page.');
+        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
 
         $colaborator = User::withTrashed()->findOrFail($id);
         $colaborator->restore();
