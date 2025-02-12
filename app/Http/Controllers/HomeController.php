@@ -15,7 +15,7 @@ class HomeController extends Controller
         if (Auth::user()->can('admin')) {
             return $this->admin_home();
         } else if (Auth::user()->can('rh')) {
-            return redirect()->route('rh.management.index');
+            return redirect()->route('colaborators.index');
         } else if (Auth::user()->can('colaborator')) {
             return $this->colaborator_home();
         }

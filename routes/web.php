@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ColaboratorController;
 use App\Http\Controllers\ConfirmAccountController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RhManagementController;
-use App\Http\Controllers\RhUserController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\RhColaboratorController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -37,18 +35,18 @@ Route::middleware('auth')->group(function () {
 
     // General colaborators
     Route::prefix('/rh/management')->name('rh.management.')->controller(RhManagementController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
+        // Route::get('/', 'index')->name('index');
         Route::get('/new', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update', 'update')->name('update');
-        Route::get('/delete/{id}', 'delete')->name('delete');
-        Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
-        Route::get('/restore/{id}', 'restore')->name('restore');
+        // Route::get('/delete/{id}', 'delete')->name('delete');
+        // Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+        // Route::get('/restore/{id}', 'restore')->name('restore');
     });
 
     // RH colaborators
-    Route::prefix('/colaborators/rh')->name('colaborators.rh.')->controller(RhUserController::class)->group(function () {
+    Route::prefix('/colaborators/rh')->name('colaborators.rh.')->controller(RhColaboratorController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/new', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -56,13 +54,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
-        Route::get('/restore/{id}', 'restore')->name('restore');
     });
 
     // Colaborators
-    Route::prefix('/colaborators')->name('colaborators.admin.')->controller(ColaboratorController::class)->group(function () {
+    Route::prefix('/colaborators')->name('colaborators.')->controller(ColaboratorController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{id}', 'show')->name('show');
+        Route::get('/new', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
         Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
         Route::get('/restore/{id}', 'restore')->name('restore');

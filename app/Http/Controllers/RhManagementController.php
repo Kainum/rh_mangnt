@@ -15,19 +15,6 @@ use Illuminate\Support\Str;
 class RhManagementController extends Controller
 {
 
-    public function index(): View
-    {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
-        // get all colaborators that are not role admin nor rh
-        $colaborators = User::withTrashed()
-            ->with('detail', 'department')
-            ->where('role', 'colaborator')
-            ->get();
-
-        return view('colaborators.admin.index', compact('colaborators'));
-    }
-
     public function create(): View
     {
         Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
@@ -131,35 +118,5 @@ class RhManagementController extends Controller
         ]);
 
         return redirect()->route('rh.management.index')->with('success', 'Colaborator updated successfully.');
-    }
-
-    public function delete($id): View|RedirectResponse
-    {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
-        $colaborator = User::findOrFail($id);
-
-        // display page for confirmation
-        return view('colaborators.admin.delete-confirm', compact('colaborator'));
-    }
-
-    public function destroy($id): RedirectResponse
-    {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
-        $colaborator = User::findOrFail($id);
-        $colaborator->delete();
-
-        return redirect()->route('rh.management.index')->with('success', 'Colaborator deleted successfully.');
-    }
-
-    public function restore($id): RedirectResponse
-    {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
-        $colaborator = User::withTrashed()->findOrFail($id);
-        $colaborator->restore();
-
-        return redirect()->route('rh.management.index')->with('success', 'Colaborator restored successfully.');
     }
 }

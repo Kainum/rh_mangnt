@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 
-class RhUserController extends Controller
+class RhColaboratorController extends Controller
 {
     public function index(): View
     {
@@ -23,7 +23,8 @@ class RhUserController extends Controller
                             ->where('role', 'rh')
                             ->get();
 
-        return view('colaborators.rh.index', compact('colaborators'));
+        $isRhInfo = true;
+        return view('colaborators.index', compact('colaborators', 'isRhInfo'));
     }
 
     public function create(): View
@@ -33,7 +34,7 @@ class RhUserController extends Controller
         // get all departments
         $departments = Department::all();
 
-        return view('colaborators.rh.create', compact('departments'));
+        return view('colaborators.create', compact('departments'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -94,7 +95,7 @@ class RhUserController extends Controller
 
         $colaborator = User::with('detail')->findOrFail($id);
 
-        return view('colaborators.rh.edit', compact('colaborator'));
+        return view('colaborators.edit', compact('colaborator'));
     }
 
     public function update(Request $request): RedirectResponse
@@ -125,7 +126,8 @@ class RhUserController extends Controller
         $colaborator = User::findOrFail($id);
 
         // display page for confirmation
-        return view('colaborators.rh.delete-confirm', compact('colaborator'));
+        $isRhInfo = true;
+        return view('colaborators.delete-confirm', compact('colaborator', 'isRhInfo'));
     }
 
     public function destroy($id): RedirectResponse
@@ -133,19 +135,8 @@ class RhUserController extends Controller
         Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
 
         $colaborator = User::findOrFail($id);
-        $colaborator->detail()->delete();
         $colaborator->delete();
 
         return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator deleted successfully.');
-    }
-
-    public function restore($id): RedirectResponse
-    {
-        Auth::user()->can('admin') ?: abort(403, 'You are not allowed to access this page.');
-
-        $colaborator = User::withTrashed()->findOrFail($id);
-        $colaborator->restore();
-
-        return redirect()->route('colaborators.rh.index')->with('success', 'Colaborator restored successfully.');
     }
 }
