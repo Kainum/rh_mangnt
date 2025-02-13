@@ -17,8 +17,6 @@ class ColaboratorController extends Controller
 {
     public function index(): View
     {
-        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
-
         $colaborators = User::withTrashed()
                         ->with('detail', 'department')
                         ->where('role', 'colaborator')
@@ -31,8 +29,6 @@ class ColaboratorController extends Controller
 
     public function show($id): View
     {
-        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
-        
         $id = Operations::decryptId($id);
 
         $colaborator = User::with('detail', 'department')
@@ -48,8 +44,6 @@ class ColaboratorController extends Controller
 
     public function create(): View
     {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
         // get all departments
         $departments = Department::where('id', '>', 2)->get();
 
@@ -64,8 +58,6 @@ class ColaboratorController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
         $request->merge([
             'department' => Operations::decryptId($request->department),
         ]);
@@ -115,8 +107,6 @@ class ColaboratorController extends Controller
 
     public function edit($id): View
     {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
         $id = Operations::decryptId($id);
 
         $colaborator = User::with('detail')
@@ -131,8 +121,6 @@ class ColaboratorController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        Auth::user()->can('rh') ?: abort(403, 'You are not allowed to access this page.');
-
         $request->merge([
             'user_id' => Operations::decryptId($request->user_id),
             'department' => Operations::decryptId($request->department),
@@ -166,8 +154,6 @@ class ColaboratorController extends Controller
 
     public function delete($id): View
     {
-        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
-
         $id = Operations::decryptId($id);
 
         $colaborator = User::where('role', 'colaborator')->findOrFail($id);
@@ -179,8 +165,6 @@ class ColaboratorController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
-
         $id = Operations::decryptId($id);
 
         $colaborator = User::where('role', 'colaborator')->findOrFail($id);
@@ -191,8 +175,6 @@ class ColaboratorController extends Controller
 
     public function restore($id): RedirectResponse
     {
-        Auth::user()->canAny(['admin', 'rh']) ?: abort(403, 'You are not allowed to access this page.');
-
         $id = Operations::decryptId($id);
 
         $colaborator = User::withTrashed()->findOrFail($id);

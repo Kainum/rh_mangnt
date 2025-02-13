@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RhColaboratorController;
 use App\Http\Middleware\OnlyAdminMiddleware;
+use App\Http\Middleware\OnlyRhMiddleware;
+use App\Http\Middleware\OnlyRhOrAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -24,16 +26,21 @@ Route::middleware('auth')->group(function () {
 
     // Colaborators
     Route::prefix('/colaborators')->name('colaborators.')->controller(ColaboratorController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/new', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::post('/update', 'update')->name('update');
-        Route::get('/delete/{id}', 'delete')->name('delete');
-        Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
-        // Tanto para RH quanto geral
-        Route::get('/show/{id}', 'show')->name('show');
-        Route::get('/restore/{id}', 'restore')->name('restore');
+
+        Route::middleware([OnlyRhOrAdminMiddleware::class])->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/show/{id}', 'show')->name('show');             // Tanto para RH quanto geral
+            Route::get('/delete/{id}', 'delete')->name('delete');
+            Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
+            Route::get('/restore/{id}', 'restore')->name('restore');    // Tanto para RH quanto geral
+        });
+
+        Route::middleware([OnlyRhMiddleware::class])->group(function () {
+            Route::get('/new', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/update', 'update')->name('update');
+        });
     });
 
     Route::middleware([OnlyAdminMiddleware::class])->group(function () {
@@ -47,7 +54,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete/{id}', 'delete')->name('delete');
             Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
         });
-        
+
         // Departments
         Route::prefix('/departments')->name('departments.')->controller(DepartmentController::class)->group(function () {
             Route::get('/', 'index')->name('index');
@@ -59,7 +66,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete-confirm/{id}', 'destroy')->name('destroy');
         });
     });
-
 });
 
 Route::middleware('guest')->group(function () {
