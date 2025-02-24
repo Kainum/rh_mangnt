@@ -2,7 +2,7 @@
 
 ## Sobre o projeto
 
-Esta aplicação foi feita seguindo os moldes do projeto "Gestor de Recursos Humanos" do curso <a href="https://www.udemy.com/course/laravel-11-framework-ecossistema-e-projetos-web/">Laravel 11: Framework, Ecossistema e Projetos Web</a> do professor João Ribeiro.
+Esta aplicação foi feita seguindo os moldes do projeto "Gestor de Recursos Humanos" do curso Laravel 11: Framework, Ecossistema e Projetos Web da Udemy.
 
 <p style="color:skyblue">
 O projeto então foi incrementado com funcionalidades de criptografia, seeders, factories e reaproveitamento de código.
