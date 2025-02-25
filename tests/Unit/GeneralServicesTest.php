@@ -37,3 +37,12 @@ it('tests if the salary with bonus is calculated correctly', function () {
 
     expect($result)->toBe(1025);
 });
+
+it('tests if the fake data is created correctly', function () {
+    $result = GeneralServices::fakeDataInJson();
+
+    $clients = json_decode($result, true);
+
+    expect(count($clients))->toBeGreaterThanOrEqual(1);
+    expect($clients[0])->toHaveKeys(['name', 'email', 'phone', 'address']);
+});

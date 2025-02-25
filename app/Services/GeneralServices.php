@@ -18,4 +18,21 @@ class GeneralServices
     {
         return $salary + $bonus;
     }
+
+    public static function fakeDataInJson() {
+        // cria 10 clientes com dados falsos
+        $clients = [];
+        $faker = \Faker\Factory::create();
+
+        for($i = 0; $i < 10; $i++) {
+            $clients[] = [
+                'name' => $faker->name(),
+                'email' => $faker->email(),
+                'phone' => $faker->phoneNumber(),
+                'address' => $faker->address(),
+            ];
+        }
+
+        return json_encode($clients);
+    }
 }
